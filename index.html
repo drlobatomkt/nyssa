@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nyssa — Elevating brands to iconic status</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Hanken+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#100d0b;
+    --bg-2:#15110e;
+    --ink:#f4ece2;
+    --ink-soft:#cdc2b4;
+    --ink-mute:#8c8378;
+    --orange:#c2632e;
+    --orange-bright:#df8d4d;
+    --orange-deep:#9a4a1f;
+    --line:rgba(244,236,226,.12);
+    --maxw:1180px;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'Hanken Grotesk',sans-serif;
+    font-weight:300;
+    line-height:1.65;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  /* grain overlay */
+  body::before{
+    content:"";position:fixed;inset:0;z-index:9999;pointer-events:none;opacity:.04;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+  .display{font-family:'Cormorant Garamond',serif;font-weight:400;line-height:1.05}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 28px}
+  section{position:relative}
+  .eyebrow{
+    font-family:'Hanken Grotesk',sans-serif;font-weight:600;font-size:.72rem;
+    letter-spacing:.34em;text-transform:uppercase;color:var(--orange-bright);
+    display:inline-flex;align-items:center;gap:12px;
+  }
+  .eyebrow::before{content:"";width:26px;height:1px;background:var(--orange)}
+
+  .star{display:inline-block;color:var(--orange)}
+
+  /* ---------- TICKER ---------- */
+  .ticker{
+    border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+    overflow:hidden;white-space:nowrap;padding:14px 0;background:var(--bg-2);
+  }
+  .ticker-track{display:inline-block;animation:scroll 38s linear infinite}
+  .ticker span{
+    font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.25rem;
+    color:var(--ink-soft);padding:0 4px;
+  }
+  .ticker .dot{color:var(--orange)}
+  @keyframes scroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+  /* ---------- HERO ---------- */
+  .hero{
+    min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;
+    text-align:center;padding:90px 24px 60px;position:relative;
+    background:
+      radial-gradient(120% 80% at 50% 0%, rgba(194,99,46,.10), transparent 55%),
+      radial-gradient(90% 60% at 50% 120%, rgba(194,99,46,.08), transparent 60%);
+  }
+  .hero .sparkle{font-size:2rem;color:var(--orange);opacity:0;animation:fade .9s .1s forwards}
+  .hero h1{
+    font-size:clamp(4.5rem,16vw,11rem);font-style:italic;font-weight:300;letter-spacing:-.01em;
+    margin:.1em 0 .15em;position:relative;display:inline-block;
+    opacity:0;animation:rise 1s .25s forwards;
+  }
+  .hero h1 .accent{font-style:normal;color:var(--orange);font-size:.5em;vertical-align:.55em;margin-left:-.05em}
+  .hero .tagline{
+    font-family:'Hanken Grotesk',sans-serif;font-weight:600;text-transform:uppercase;
+    letter-spacing:.2em;font-size:clamp(.95rem,2.4vw,1.35rem);
+    opacity:0;animation:rise 1s .5s forwards;
+  }
+  .hero .sub{
+    max-width:540px;margin:26px auto 0;color:var(--ink-soft);font-size:1.05rem;
+    opacity:0;animation:rise 1s .7s forwards;
+  }
+  .scrolldown{
+    position:absolute;bottom:34px;left:50%;transform:translateX(-50%);
+    font-size:.7rem;letter-spacing:.3em;text-transform:uppercase;color:var(--ink-mute);
+    opacity:0;animation:fade 1s 1.1s forwards;display:flex;flex-direction:column;align-items:center;gap:8px;
+  }
+  .scrolldown .bar{width:1px;height:42px;background:linear-gradient(var(--orange),transparent);animation:pulse 2s infinite}
+  @keyframes rise{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+  @keyframes fade{from{opacity:0}to{opacity:1}}
+  @keyframes pulse{0%,100%{opacity:.4}50%{opacity:1}}
+
+  /* ---------- GENERIC SECTION ---------- */
+  .pad{padding:120px 0}
+  .pad-sm{padding:90px 0}
+  h2.section-title{
+    font-size:clamp(2.6rem,6vw,4.6rem);font-weight:300;margin:24px 0 0;letter-spacing:-.01em;
+  }
+  .lead{font-size:clamp(1.15rem,2.6vw,1.5rem);color:var(--ink-soft);font-weight:300;max-width:680px;line-height:1.55}
+  em.hl{font-style:italic;color:var(--orange-bright)}
+
+  /* reveal */
+  .reveal{opacity:0;transform:translateY(40px);transition:opacity .9s cubic-bezier(.2,.7,.2,1),transform .9s cubic-bezier(.2,.7,.2,1)}
+  .reveal.in{opacity:1;transform:none}
+
+  /* ---------- QUEM SOMOS ---------- */
+  .about{border-top:1px solid var(--line)}
+  .about .grid{display:grid;grid-template-columns:1fr 1.1fr;gap:70px;align-items:center}
+  .about .big{font-size:clamp(2rem,4.4vw,3.2rem);font-weight:300;line-height:1.18}
+  .hashtag{
+    display:inline-block;margin-top:34px;font-family:'Cormorant Garamond',serif;font-style:italic;
+    font-size:1.6rem;color:var(--orange-bright);
+  }
+  .about p{color:var(--ink-soft);font-size:1.05rem;margin-bottom:18px}
+
+  /* ---------- DIFERENCIAIS ---------- */
+  .diffs{
+    background:
+      linear-gradient(180deg, #1a130d 0%, #3a1f10 45%, #6f3a18 100%);
+    position:relative;overflow:hidden;
+  }
+  .diffs::after{content:"";position:absolute;inset:0;background:radial-gradient(80% 60% at 80% 30%,rgba(223,141,77,.25),transparent 60%);pointer-events:none}
+  .diffs .inner{position:relative;z-index:2}
+  .diffs h2.section-title{max-width:760px}
+  .diff-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:0;margin-top:60px;border-top:1px solid rgba(244,236,226,.18)}
+  .diff{
+    padding:30px 28px 30px 0;border-bottom:1px solid rgba(244,236,226,.18);
+    display:flex;gap:20px;align-items:flex-start;
+  }
+  .diff:nth-child(odd){border-right:1px solid rgba(244,236,226,.18);padding-right:40px}
+  .diff:nth-child(even){padding-left:40px}
+  .diff .num{font-family:'Cormorant Garamond',serif;font-size:1.4rem;color:var(--bg);background:var(--ink);
+    min-width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin-top:4px}
+  .diff p{font-size:1.18rem;font-weight:400;color:#fff;line-height:1.35}
+
+  /* ---------- MÉTODO DOM ---------- */
+  .method{border-top:1px solid var(--line)}
+  .method .head{max-width:720px}
+  .dom-badge{
+    font-family:'Cormorant Garamond',serif;font-size:clamp(3rem,7vw,5rem);letter-spacing:.06em;
+    display:inline-flex;align-items:baseline;gap:.15em;margin:8px 0 4px;
+  }
+  .dom-badge .d{color:var(--orange)}
+  .dom-full{font-size:.95rem;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-mute)}
+  .pillars{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:64px}
+  .pillar{
+    border:1px solid var(--line);border-radius:4px;padding:34px 30px;background:linear-gradient(180deg,rgba(255,255,255,.02),transparent);
+    transition:border-color .5s,transform .5s,background .5s;position:relative;overflow:hidden;
+  }
+  .pillar::before{content:"";position:absolute;top:0;left:0;width:100%;height:2px;background:var(--orange);transform:scaleX(0);transform-origin:left;transition:transform .6s}
+  .pillar:hover{transform:translateY(-6px);border-color:rgba(223,141,77,.5);background:linear-gradient(180deg,rgba(194,99,46,.08),transparent)}
+  .pillar:hover::before{transform:scaleX(1)}
+  .pillar .pn{font-family:'Cormorant Garamond',serif;font-size:3.2rem;color:var(--orange);line-height:1}
+  .pillar h3{font-family:'Cormorant Garamond',serif;font-weight:500;font-size:1.75rem;margin:14px 0 16px;line-height:1.1}
+  .pillar .tags{font-size:.85rem;color:var(--ink-mute);line-height:1.9;letter-spacing:.02em;border-top:1px solid var(--line);padding-top:16px;margin-top:4px}
+  .pillar .why{margin-top:18px;font-size:.98rem;color:var(--ink-soft)}
+  .pillar .why b{color:var(--orange-bright);font-weight:600}
+  .method .closer{margin-top:60px;font-size:clamp(1.3rem,3vw,2rem);font-weight:300;max-width:880px;line-height:1.4}
+
+  /* ---------- SERVIÇOS ---------- */
+  .services{background:var(--bg-2);border-top:1px solid var(--line)}
+  .svc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;margin-top:60px;background:var(--line);border:1px solid var(--line)}
+  .svc{background:var(--bg-2);padding:40px 32px;transition:background .5s;position:relative}
+  .svc:hover{background:#1c1712}
+  .svc .si{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1rem;color:var(--orange);margin-bottom:18px}
+  .svc h3{font-family:'Cormorant Garamond',serif;font-weight:500;font-size:1.8rem;line-height:1.05;margin-bottom:16px}
+  .svc ul{list-style:none;display:flex;flex-direction:column;gap:9px}
+  .svc li{font-size:.95rem;color:var(--ink-soft);padding-left:18px;position:relative}
+  .svc li::before{content:"";position:absolute;left:0;top:.62em;width:7px;height:7px;border:1px solid var(--orange);transform:rotate(45deg)}
+
+  /* ---------- PROCESSO ---------- */
+  .process{border-top:1px solid var(--line)}
+  .steps{display:grid;grid-template-columns:repeat(5,1fr);gap:0;margin-top:64px}
+  .step{padding:0 22px;border-left:1px solid var(--line);position:relative}
+  .step:first-child{border-left:none;padding-left:0}
+  .step .sn{font-family:'Cormorant Garamond',serif;font-size:3.4rem;color:var(--orange);line-height:1}
+  .step h4{font-weight:600;font-size:1.02rem;margin-top:12px;letter-spacing:.01em}
+  .process .note{margin-top:54px;font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.7rem;color:var(--orange-bright)}
+
+  /* ---------- CASES ---------- */
+  .cases{
+    background:linear-gradient(180deg,#1a130d,#5f3216 60%,#7a4019);position:relative;overflow:hidden;border-top:1px solid var(--line)
+  }
+  .cases::after{content:"";position:absolute;inset:0;background:radial-gradient(70% 50% at 20% 80%,rgba(223,141,77,.3),transparent 60%);pointer-events:none}
+  .cases .inner{position:relative;z-index:2}
+  .stat-row{display:grid;grid-template-columns:repeat(4,1fr);gap:30px;margin-top:54px;margin-bottom:70px}
+  .stat .v{font-family:'Cormorant Garamond',serif;font-size:clamp(2.6rem,5vw,3.8rem);color:#fff;line-height:1}
+  .stat .l{font-size:.86rem;color:rgba(255,255,255,.78);margin-top:8px;letter-spacing:.02em}
+  .case-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+  .case-featured{
+    background:rgba(16,13,11,.55);backdrop-filter:blur(4px);border:1px solid rgba(255,224,201,.35);
+    border-radius:4px;padding:38px 40px;margin-bottom:22px;position:relative;overflow:hidden;
+  }
+  .case-featured::before{content:"";position:absolute;top:0;left:0;width:3px;height:100%;background:var(--orange)}
+  .cf-top{display:flex;justify-content:space-between;align-items:baseline;gap:20px;flex-wrap:wrap}
+  .cf-top .cn{font-family:'Cormorant Garamond',serif;font-size:2.2rem;color:var(--orange-bright);font-weight:500}
+  .cf-tag{font-size:.72rem;letter-spacing:.28em;text-transform:uppercase;color:#ffe0c9;font-weight:600}
+  .case-featured .desc{font-size:1.05rem;color:var(--ink-soft);margin:14px 0 4px;max-width:760px}
+  .case-featured .ritual{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.5rem;color:#fff;margin:18px 0 26px;max-width:780px;line-height:1.3}
+  .cf-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;border-top:1px solid rgba(244,236,226,.18);padding-top:26px}
+  .cf-stats .v{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,4vw,2.9rem);color:#fff;line-height:1}
+  .cf-stats .l{font-size:.84rem;color:rgba(255,255,255,.78);margin-top:7px;line-height:1.4}
+  .case{background:rgba(16,13,11,.5);backdrop-filter:blur(4px);border:1px solid rgba(244,236,226,.16);border-radius:4px;padding:26px;transition:transform .5s,border-color .5s}
+  .case:hover{transform:translateY(-5px);border-color:rgba(255,255,255,.45)}
+  .case .cn{font-family:'Cormorant Garamond',serif;font-size:1.5rem;color:var(--orange-bright);font-weight:500}
+  .case p{font-size:.95rem;color:var(--ink-soft);margin-top:10px}
+  .cases .since{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.4rem;color:#fff;opacity:.9}
+
+  /* ---------- FOR YOU ---------- */
+  .foryou{border-top:1px solid var(--line)}
+  .fy-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px 50px;margin-top:54px}
+  .fy{display:flex;gap:16px;align-items:flex-start;padding:18px 0;border-bottom:1px solid var(--line)}
+  .fy .chk{color:var(--orange);font-size:1.2rem;line-height:1.4}
+  .fy p{font-size:1.1rem;color:var(--ink-soft)}
+
+  /* ---------- CTA ---------- */
+  .cta{
+    text-align:center;padding:140px 24px 110px;position:relative;border-top:1px solid var(--line);
+    background:radial-gradient(110% 80% at 50% 0%,rgba(194,99,46,.12),transparent 60%);
+  }
+  .cta .sparkle{font-size:1.6rem;color:var(--orange)}
+  .cta h2{font-size:clamp(2.8rem,7vw,5.5rem);font-weight:300;font-style:italic;margin:18px 0 8px}
+  .cta .word{font-style:normal}
+  .cta p{color:var(--ink-soft);font-size:1.15rem;max-width:560px;margin:0 auto 44px}
+  .contacts{display:flex;gap:18px;justify-content:center;flex-wrap:wrap;margin-bottom:40px}
+  .btn{
+    display:inline-flex;align-items:center;gap:10px;padding:16px 30px;border-radius:50px;
+    font-size:.95rem;font-weight:600;letter-spacing:.02em;text-decoration:none;transition:all .4s;
+  }
+  .btn-primary{background:var(--orange);color:#fff}
+  .btn-primary:hover{background:var(--orange-bright);transform:translateY(-3px)}
+  .btn-ghost{border:1px solid var(--line);color:var(--ink)}
+  .btn-ghost:hover{border-color:var(--orange);color:var(--orange-bright)}
+  .cta .closing{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.5rem;color:var(--ink-soft);margin-top:30px}
+  .ns-mono{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:2.2rem;color:var(--ink);margin-top:54px;letter-spacing:.05em}
+
+  footer{text-align:center;padding:34px;font-size:.8rem;color:var(--ink-mute);letter-spacing:.04em;border-top:1px solid var(--line)}
+
+  /* ---------- RESPONSIVE ---------- */
+  @media(max-width:900px){
+    .about .grid{grid-template-columns:1fr;gap:36px}
+    .pillars{grid-template-columns:1fr}
+    .svc-grid{grid-template-columns:1fr 1fr}
+    .steps{grid-template-columns:repeat(2,1fr);gap:34px 0}
+    .step{border-left:none;padding:0}
+    .stat-row{grid-template-columns:repeat(2,1fr);gap:34px}
+    .case-grid{grid-template-columns:1fr}
+    .cf-stats{grid-template-columns:1fr;gap:18px}
+    .case-featured{padding:30px 26px}
+    .diff-grid{grid-template-columns:1fr}
+    .diff:nth-child(odd){border-right:none;padding-right:0}
+    .diff:nth-child(even){padding-left:0}
+    .fy-grid{grid-template-columns:1fr;gap:0}
+    .pad{padding:84px 0}
+  }
+  @media(max-width:560px){
+    .svc-grid{grid-template-columns:1fr}
+    .stat-row{grid-template-columns:1fr 1fr}
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="sparkle">✦</div>
+  <h1 class="display">nyssa<span class="accent">✦</span></h1>
+  <div class="tagline">Elevating brands to iconic status</div>
+  <p class="sub">Comunicação que é estratégia — não só estética. Movemos sua marca com clareza, propósito e resultado.</p>
+  <div class="scrolldown"><span>Role</span><span class="bar"></span></div>
+</header>
+
+<!-- TICKER -->
+<div class="ticker">
+  <div class="ticker-track">
+    <span>branding</span><span class="dot">·</span><span>consultoria estratégica</span><span class="dot">·</span><span>tráfego pago</span><span class="dot">·</span><span>social media</span><span class="dot">·</span><span>design gráfico</span><span class="dot">·</span><span>marketing de influência</span><span class="dot">·</span>
+    <span>branding</span><span class="dot">·</span><span>consultoria estratégica</span><span class="dot">·</span><span>tráfego pago</span><span class="dot">·</span><span>social media</span><span class="dot">·</span><span>design gráfico</span><span class="dot">·</span><span>marketing de influência</span><span class="dot">·</span>
+  </div>
+</div>
+
+<!-- QUEM SOMOS -->
+<section class="about pad">
+  <div class="wrap grid">
+    <div class="reveal">
+      <span class="eyebrow">Quem somos</span>
+      <div class="big display" style="margin-top:22px">Comunicação é <em class="hl">estratégia</em>, não só estética.</div>
+      <span class="hashtag">#efeitonyssa</span>
+    </div>
+    <div class="reveal">
+      <p>A Nyssa é uma assessoria feita para marcas que entenderam que comunicação precisa ter direção. Criamos campanhas, conteúdos e direções criativas que nascem de um olhar profundo sobre o seu negócio.</p>
+      <p>Entregamos estratégia que traz resultado — com acompanhamento e inteligência aplicada à realidade da sua empresa.</p>
+      <p>Somos o time que pensa <em class="hl">com você</em> e move sua marca com clareza, propósito e resultado.</p>
+    </div>
+  </div>
+</section>
+
+<!-- DIFERENCIAIS -->
+<section class="diffs pad">
+  <div class="wrap inner">
+    <div class="reveal">
+      <span class="eyebrow" style="color:#ffe0c9">Mais do que executar tarefas</span>
+      <h2 class="section-title">Traduzimos o momento da sua marca em ações concretas.</h2>
+    </div>
+    <div class="diff-grid reveal">
+      <div class="diff"><span class="num">1</span><p>Estratégia realista e personalizada</p></div>
+      <div class="diff"><span class="num">2</span><p>Posicionamento baseado no propósito da marca e público ideal</p></div>
+      <div class="diff"><span class="num">3</span><p>Conteúdo que conecta</p></div>
+      <div class="diff"><span class="num">4</span><p>Direção criativa com identidade</p></div>
+      <div class="diff"><span class="num">5</span><p>Engajamento e visibilidade nas redes</p></div>
+      <div class="diff"><span class="num">6</span><p>Apoio total na execução</p></div>
+      <div class="diff"><span class="num">7</span><p>Organização entre marketing, comercial e tráfego</p></div>
+      <div class="diff"><span class="num">✦</span><p>Tudo com processos bem alinhados e foco em resultado</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- MÉTODO DOM -->
+<section class="method pad">
+  <div class="wrap">
+    <div class="head reveal">
+      <div class="dom-badge display"><span class="d">D</span>.O.M<span class="star" style="font-size:.5em;vertical-align:.5em">✦</span></div>
+      <div class="dom-full">Domínio de Ocupação de Mercado</div>
+      <p class="lead" style="margin-top:24px">Um sistema estratégico de comunicação que conecta <em class="hl">posicionamento, presença e ativação comercial</em> para transformar empresas em marcas percebidas como referência.</p>
+    </div>
+
+    <div class="pillars">
+      <div class="pillar reveal">
+        <div class="pn">01</div>
+        <h3>Posicionamento Estratégico</h3>
+        <p>A marca para de comunicar de forma aleatória e passa a ocupar espaço mental no público.</p>
+        <div class="tags">auditoria · pesquisa de mercado · análise da concorrência · branding · definição de objetivos · direcionamento estratégico</div>
+        <p class="why"><b>Por que funciona:</b> marcas dominantes não crescem só por terem um bom produto — crescem porque ocupam espaço na mente do público.</p>
+      </div>
+      <div class="pillar reveal">
+        <div class="pn">02</div>
+        <h3>Presença Multicanal</h3>
+        <p>O cliente encontra a marca em todos os pontos importantes. Ela passa a parecer viva, presente e relevante.</p>
+        <div class="tags">gestão de conteúdo · design digital e offline · videomaker · redes sociais · materiais físicos · campanhas visuais</div>
+        <p class="why"><b>Por que funciona:</b> percepção de autoridade vem da repetição. Quanto mais consistente a presença, maior a sensação de liderança.</p>
+      </div>
+      <div class="pillar reveal">
+        <div class="pn">03</div>
+        <h3>Ativação Comercial Inteligente</h3>
+        <p>Marketing sem ação comercial vira só estética. Aqui a comunicação movimenta comportamento e faturamento.</p>
+        <div class="tags">campanhas · tráfego pago · marketing de influência · ativações promocionais · estratégias de crescimento</div>
+        <p class="why"><b>Por que funciona:</b> comunicação estratégica não serve só para gerar alcance — ela move percepção, comportamento e resultado.</p>
+      </div>
+    </div>
+
+    <p class="closer display reveal">Primeiro posicionamos a marca. Depois fortalecemos sua presença em todos os pontos de contato. Por fim, ativamos ações comerciais inteligentes para transformar percepção em <em class="hl">crescimento</em>.</p>
+  </div>
+</section>
+
+<!-- SERVIÇOS -->
+<section class="services pad">
+  <div class="wrap">
+    <div class="reveal">
+      <span class="eyebrow">Nossos serviços</span>
+      <h2 class="section-title">Um time completo de comunicação.</h2>
+    </div>
+    <div class="svc-grid reveal">
+      <div class="svc">
+        <div class="si">01</div>
+        <h3>Gestão de Mídias Sociais</h3>
+        <ul>
+          <li>Planejamento, produção e gestão para Instagram, TikTok e Facebook</li>
+          <li>Criação estratégica de conteúdo</li>
+          <li>Roteiros para vídeos e reels</li>
+          <li>Direção e captação de material</li>
+          <li>Agendamento e análise de performance</li>
+        </ul>
+      </div>
+      <div class="svc">
+        <div class="si">02</div>
+        <h3>Design Gráfico</h3>
+        <ul>
+          <li>Peças visuais para o digital e o mundo físico</li>
+          <li>Artes para redes sociais</li>
+          <li>Panfletos, banners, outdoors e adesivos de vitrine</li>
+          <li>Materiais internos e promocionais</li>
+        </ul>
+      </div>
+      <div class="svc">
+        <div class="si">03</div>
+        <h3>Marketing de Influência</h3>
+        <ul>
+          <li>Escolha estratégica de perfis</li>
+          <li>Criação de briefing e relacionamento</li>
+          <li>Validação de conteúdo</li>
+          <li>Intermediação total com creators</li>
+          <li>Entregas com zero dor de cabeça</li>
+        </ul>
+      </div>
+      <div class="svc">
+        <div class="si">04</div>
+        <h3>Projetos Estratégicos</h3>
+        <ul>
+          <li>Projetos pontuais para destravar momentos-chave</li>
+          <li>Diagnóstico de comunicação, comercial e tráfego</li>
+          <li>Criação de campanhas especiais</li>
+          <li>Integração entre áreas-chave</li>
+          <li>Alinhamento de metas e objetivos</li>
+        </ul>
+      </div>
+      <div class="svc">
+        <div class="si">05</div>
+        <h3>Rebranding e Posicionamento</h3>
+        <ul>
+          <li>Storytelling de marca</li>
+          <li>Identidade verbal e tom de voz</li>
+          <li>Nova proposta de valor</li>
+          <li>Narrativa de marca</li>
+          <li>Campanhas de relançamento</li>
+        </ul>
+      </div>
+      <div class="svc">
+        <div class="si">06</div>
+        <h3>Direção de Conteúdo</h3>
+        <ul>
+          <li>Moodboard visual</li>
+          <li>Acompanhamento de ensaio e gravação</li>
+          <li>Indicação de profissionais parceiros</li>
+          <li>Roteiro e direção de captação</li>
+          <li>Cada clique servindo a mais de uma estratégia</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESSO -->
+<section class="process pad">
+  <div class="wrap">
+    <div class="reveal">
+      <span class="eyebrow">Como trabalhamos</span>
+      <h2 class="section-title">Um caminho claro, do diagnóstico ao resultado.</h2>
+    </div>
+    <div class="steps reveal">
+      <div class="step"><div class="sn">1</div><h4>Onboarding + Reunião de Alinhamento</h4></div>
+      <div class="step"><div class="sn">2</div><h4>Planejamento Estratégico</h4></div>
+      <div class="step"><div class="sn">3</div><h4>Produção & Aprovação</h4></div>
+      <div class="step"><div class="sn">4</div><h4>Execução & Acompanhamento</h4></div>
+      <div class="step"><div class="sn">5</div><h4>Otimização Contínua</h4></div>
+    </div>
+    <p class="note reveal">Você participa do processo de forma leve, sem ser sobrecarregado.</p>
+  </div>
+</section>
+
+<!-- CASES -->
+<section class="cases pad">
+  <div class="wrap inner">
+    <div class="reveal">
+      <span class="eyebrow" style="color:#ffe0c9">Resultados reais</span>
+      <h2 class="section-title">Desde 2020, estratégia para mais de 50 marcas.</h2>
+    </div>
+
+    <div class="stat-row reveal">
+      <div class="stat"><div class="v" data-target="50" data-suffix="+">0</div><div class="l">marcas de diferentes tamanhos e segmentos</div></div>
+      <div class="stat"><div class="v" data-target="1" data-suffix="M+">0</div><div class="l">produtos vendidos por cliente internacional</div></div>
+      <div class="stat"><div class="v" data-target="52" data-suffix="K">0</div><div class="l">seguidores alcançados por cliente de moda</div></div>
+      <div class="stat"><div class="v" data-target="5" data-suffix="">0</div><div class="l">unidades — da expansão de um cliente de food</div></div>
+    </div>
+
+    <div class="case-featured reveal">
+      <div class="cf-top">
+        <div class="cn">Sartoni</div>
+        <span class="cf-tag">Case em destaque</span>
+      </div>
+      <p class="desc">Restaurante especialista em cortes nobres. Ativamos conteúdo online + offline (outdoor e totens), integrando os dois mundos numa estratégia única.</p>
+      <p class="ritual">Mais que campanhas: criamos um hábito de consumo — um verdadeiro ritual na mente do cliente.</p>
+      <div class="cf-stats">
+        <div>
+          <div class="v">R$ 1M+</div>
+          <div class="l">em vendas geradas ao longo da parceria</div>
+        </div>
+        <div>
+          <div class="v">~R$ 100 mil</div>
+          <div class="l">em vendas num único dia da semana — média mensal recorrente</div>
+        </div>
+        <div>
+          <div class="v">+30%</div>
+          <div class="l">de crescimento no faturamento ao longo de 1 ano</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="case-grid reveal">
+      <div class="case">
+        <div class="cn">Deixaelatreinar</div>
+        <p>Comunidade esportiva que passou pelo Shark Tank Brasil, patrocinou times femininos (Vasco, Cruzeiro e Santos) e entrega conteúdo com propósito real.</p>
+      </div>
+      <div class="case">
+        <div class="cn">Keli Lima</div>
+        <p>Especialista em segurança dos alimentos: saiu de 14 mil para 21,4 mil seguidores organicamente, com conteúdo estratégico e posicionamento bem definido.</p>
+      </div>
+      <div class="case">
+        <div class="cn">Core</div>
+        <p>Loja de roupas infantis tradicional que saltou de ~1.000 para mais de 15 mil seguidores (orgânico), com posicionamento inovador na pandemia.</p>
+      </div>
+      <div class="case">
+        <div class="cn">Seu Pastel</div>
+        <p>Eleito o melhor pastel do Brasil no programa Mais Você, chegou à Nyssa para um rebranding completo e segue com gestão de redes sociais.</p>
+      </div>
+      <div class="case">
+        <div class="cn">Estação Fogo Baixo</div>
+        <p>Restaurante self-service: chegou com duas unidades, participamos da expansão para quatro e agora da campanha de abertura da quinta.</p>
+      </div>
+      <div class="case">
+        <div class="cn">Love Shoes</div>
+        <p>Moda feminina que cresceu de 15 mil para 52 mil seguidores com conteúdo estratégico e criativos para tráfego pago. Virou referência local.</p>
+      </div>
+      <div class="case">
+        <div class="cn">5Kind</div>
+        <p>Skincare natural do Reino Unido que já vendeu mais de um milhão de produtos, com ativação em TikTok Shop, Amazon, Facebook, Instagram e YouTube.</p>
+      </div>
+      <div class="case" style="display:flex;flex-direction:column;justify-content:center;background:transparent;border-style:dashed">
+        <p class="since">…e mais de 50 marcas que entenderam que comunicação é estratégia. <strong style="color:#fff">A sua pode ser a próxima.</strong></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRA VOCÊ SE -->
+<section class="foryou pad">
+  <div class="wrap">
+    <div class="reveal">
+      <span class="eyebrow">Esse material é pra você se…</span>
+      <h2 class="section-title">A gente fala a mesma língua?</h2>
+    </div>
+    <div class="fy-grid reveal">
+      <div class="fy"><span class="chk">✦</span><p>Você quer crescer com posicionamento e virar referência no setor</p></div>
+      <div class="fy"><span class="chk">✦</span><p>Precisa profissionalizar sua presença digital</p></div>
+      <div class="fy"><span class="chk">✦</span><p>Busca um time que pensa marketing com e por você</p></div>
+      <div class="fy"><span class="chk">✦</span><p>Tem uma equipe enxuta e precisa de apoio na comunicação</p></div>
+      <div class="fy"><span class="chk">✦</span><p>Quer criar campanhas estratégicas para crescer a marca</p></div>
+      <div class="fy"><span class="chk">✦</span><p>Está cansado de "posts bonitinhos" sem estratégia</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta">
+  <div class="sparkle">✦</div>
+  <h2 class="display">Vamos <span class="word">conversar?</span></h2>
+  <p>Cada marca tem um momento. Queremos entender o seu e desenhar, junto com você, a estratégia certa para o próximo passo.</p>
+  <div class="contacts">
+    <a class="btn btn-primary" href="https://wa.me/5532998810560" target="_blank" rel="noopener">WhatsApp · (32) 99881-0560</a>
+    <a class="btn btn-ghost" href="mailto:nyssaagencia@gmail.com">nyssaagencia@gmail.com</a>
+    <a class="btn btn-ghost" href="https://instagram.com/agencianyssa" target="_blank" rel="noopener">@agencianyssa</a>
+  </div>
+  <p class="closing display">Qual o próximo passo que sua marca quer dar?<br>A gente cria essa jornada com você.</p>
+  <div class="ns-mono">NS ✦</div>
+</section>
+
+<footer>Nyssa · Elevating brands to iconic status · #efeitonyssa</footer>
+
+<script>
+  // scroll reveal
+  const io=new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})
+  },{threshold:.15});
+  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+  // counters
+  const counted=new Set();
+  const cio=new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting && !counted.has(e.target)){
+        counted.add(e.target);
+        const el=e.target, target=+el.dataset.target, suffix=el.dataset.suffix||'';
+        let cur=0; const dur=1400, t0=performance.now();
+        const tick=(t)=>{
+          const p=Math.min((t-t0)/dur,1);
+          const val=Math.floor((1-Math.pow(1-p,3))*target);
+          el.textContent=val+suffix;
+          if(p<1)requestAnimationFrame(tick); else el.textContent=target+suffix;
+        };
+        requestAnimationFrame(tick);
+      }
+    })
+  },{threshold:.6});
+  document.querySelectorAll('.stat .v').forEach(el=>cio.observe(el));
+</script>
+</body>
+</html>
