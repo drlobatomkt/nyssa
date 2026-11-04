@@ -10,6 +10,13 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,700&display=swap">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;600&text=%C3%AA%C3%8A&display=swap">
+<!-- Google Tag Manager (contêiner GTM-PVFHSS4R, conectado ao Meta) -->
+<script async src="https://www.googletagmanager.com/gtm.js?id=GTM-PVFHSS4R"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+</script>
 <style>
 :root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 body{margin:0}
@@ -487,6 +494,26 @@ footer img{height:22px;width:auto;opacity:.7}
 /* ===== Configuração ===== */
 const WHATSAPP_NUMBER = '5532987037925';   // número que recebe os leads
 const META_PIXEL_ID   = '';                // cole aqui o ID do Pixel da Nyssa
+const GA_MEASUREMENT_ID = 'G-N6Z8LWBMPL';  // GA4 · conta Agência Nyssa · propriedade Nyssa · Diagnóstico Food
+
+/* ===== Google Analytics 4 (só carrega com o ID preenchido) ===== */
+window.dataLayer = window.dataLayer || [];
+function gtag() { dataLayer.push(arguments); }
+if (GA_MEASUREMENT_ID) {
+  const s = document.createElement('script');
+  s.async = true;
+  s.src = 'https://www.googletagmanager.com/gtag/js?id=' + GA_MEASUREMENT_ID;
+  document.head.appendChild(s);
+  gtag('config', GA_MEASUREMENT_ID);   // o gtag('js') já é chamado no snippet do GTM, no topo
+}
+function gaEvent(name, params) {
+  try { if (GA_MEASUREMENT_ID) gtag('event', name, params || {}); } catch (e) {}
+  // Mesmo evento no formato do Tag Manager, para acionadores "Evento personalizado" no GTM
+  try {
+    const { event_callback, transport_type, ...data } = params || {};
+    dataLayer.push({ event: name, ...data });
+  } catch (e) {}
+}
 
 /* ===== Pixel do Meta (só carrega com o ID preenchido) ===== */
 if (META_PIXEL_ID) {
@@ -541,7 +568,7 @@ function renderQuestion() {
 }
 
 function answer(val) {
-  if (!quizStarted) { quizStarted = true; track('QuizIniciado', {}, true); }
+  if (!quizStarted) { quizStarted = true; track('QuizIniciado', {}, true); gaEvent('quiz_inicio'); }
   answers[step] = val;
   if (step < QUESTIONS.length - 1) { step++; renderQuestion(); }
   else showResult();
@@ -572,6 +599,7 @@ function showResult() {
   $('quiz-steps').hidden = true;
   $('quiz-result').hidden = false;
   track('QuizConcluido', { score: s, nivel: lv.label }, true);
+  gaEvent('quiz_concluido', { nota: s, nivel: lv.label });
   $('diagnostico').scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
@@ -610,6 +638,7 @@ function buildAsk() {
 
 $('r-yes').addEventListener('click', () => {
   track('QuerResolver', { score: score() }, true);
+  gaEvent('quer_resolver', { nota: score(), nivel: level().label });
   $('r-ask-block').hidden = true;
   $('lead-form').hidden = false;
   $('f-nome').focus({ preventScroll: true });
@@ -699,12 +728,17 @@ $('lead-form').addEventListener('submit', e => {
   // api.whatsapp.com em vez de wa.me: o redirecionamento do wa.me corrompe os emojis da mensagem
   const url = `https://api.whatsapp.com/send?phone=${WHATSAPP_NUMBER}&text=${encodeURIComponent(buildMessage())}`;
   track('Lead', { content_name: 'Diagnostico Prontidao', value: score(), segmento: $('f-seg').value, faturamento: $('f-fat').value });
+  // Fora de iframe (página publicada no domínio), abre o WhatsApp direto,
+  // esperando o GA confirmar o lead (ou no máximo 1,5 s) para não perder a conversão
+  let gone = false;
+  const go = () => { if (!gone && window.top === window.self) { gone = true; location.href = url; } };
+  gaEvent('generate_lead', { nota: score(), nivel: level().label, segmento: $('f-seg').value, faturamento: $('f-fat').value,
+                             transport_type: 'beacon', event_callback: () => setTimeout(go, 300) });
   $('wa-link').href = url;
   $('quiz-result').hidden = true;
   $('quiz-done').hidden = false;
   $('diagnostico').scrollIntoView({ behavior: 'smooth', block: 'start' });
-  // Fora de iframe (página publicada no domínio), abre o WhatsApp direto
-  if (window.top === window.self) setTimeout(() => { location.href = url; }, 700);
+  setTimeout(go, GA_MEASUREMENT_ID ? 1500 : 700);
 });
 
 $('redo').addEventListener('click', () => {
